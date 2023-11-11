@@ -1,16 +1,21 @@
 {
-	"name": "download",
-	"version": "8.0.0",
+	"name": "@zentus/download",
+	"version": "9.0.0",
 	"description": "Download and extract files",
 	"license": "MIT",
-	"repository": "kevva/download",
 	"author": {
 		"email": "kevinmartensson@gmail.com",
 		"name": "Kevin Mårtensson",
 		"url": "github.com/kevva"
 	},
+	"contributors": [
+		{
+			"name": "zentus"
+		}
+	],
 	"engines": {
-		"node": ">=10"
+		"node": ">=18",
+		"npm": ">=9"
 	},
 	"scripts": {
 		"test": "xo && ava"
@@ -33,7 +38,7 @@
 		"file-type": "^11.1.0",
 		"filenamify": "^3.0.0",
 		"get-stream": "^4.1.0",
-		"got": "^8.3.1",
+		"got": "^13.0.0",
 		"make-dir": "^2.1.0",
 		"p-event": "^2.1.0",
 		"pify": "^4.0.1"
