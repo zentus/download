@@ -3,22 +3,25 @@
 	"version": "9.0.0",
 	"description": "Download and extract files",
 	"license": "MIT",
+	"type": "commonjs",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/zentus/download.git"
+	},
 	"author": {
 		"email": "kevinmartensson@gmail.com",
 		"name": "Kevin Mårtensson",
-		"url": "github.com/kevva"
+		"url": "https://github.com/kevva"
 	},
 	"contributors": [
 		{
 			"name": "zentus"
 		}
 	],
-	"engines": {
-		"node": ">=18",
-		"npm": ">=9"
-	},
 	"scripts": {
-		"test": "xo && ava"
+		"test": "ava",
+		"lint": "xo",
+		"lint:fix": "xo --fix"
 	},
 	"files": [
 		"index.js"
@@ -37,19 +40,18 @@
 		"ext-name": "^5.0.0",
 		"file-type": "^11.1.0",
 		"filenamify": "^3.0.0",
-		"get-stream": "^4.1.0",
-		"got": "^13.0.0",
+		"get-stream": "^6.0.1",
+		"got": "^11.8.6",
 		"make-dir": "^2.1.0",
 		"p-event": "^2.1.0",
 		"pify": "^4.0.1"
 	},
 	"devDependencies": {
-		"ava": "^1.4.1",
+		"ava": "^5.3.1",
 		"is-zip": "^1.0.0",
-		"nock": "^10.0.6",
-		"path-exists": "^3.0.0",
+		"nock": "^13.3.8",
 		"random-buffer": "^0.1.0",
-		"rimraf": "^3.0.0",
-		"xo": "^0.24.0"
+		"rimraf": "^5.0.5",
+		"xo": "^0.56.0"
 	}
 }

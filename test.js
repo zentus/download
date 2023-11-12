@@ -1,14 +1,18 @@
-import fs from 'fs';
-import path from 'path';
-import test from 'ava';
-import contentDisposition from 'content-disposition';
-import getStream from 'get-stream';
-import isZip from 'is-zip';
-import nock from 'nock';
-import pathExists from 'path-exists';
-import pify from 'pify';
-import randomBuffer from 'random-buffer';
-import m from '.';
+const fs = require('node:fs');
+const fsPromise = require('node:fs/promises');
+const path = require('node:path');
+const test = require('ava');
+const contentDisposition = require('content-disposition');
+const getStream = require('get-stream');
+const isZip = require('is-zip');
+const nock = require('nock');
+const pify = require('pify');
+const randomBuffer = require('random-buffer');
+const m = require('./');
+
+const pathExists = path => fsPromise.stat(path)
+	.then(s => Boolean(s))
+	.catch(e => false)
 
 const fsP = pify(fs);
 
@@ -81,7 +85,7 @@ test('extract file that is not compressed', async t => {
 });
 
 test('error on 404', async t => {
-	await t.throwsAsync(m('http://foo.bar/404'), 'Response code 404 (Not Found)');
+	await t.throwsAsync(m('http://foo.bar/404'), undefined, 'Response code 404 (Not Found)');
 });
 
 test('rename to valid filename', async t => {

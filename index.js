@@ -1,7 +1,7 @@
 'use strict';
-const fs = require('fs');
-const path = require('path');
-const {URL} = require('url');
+const fs = require('node:fs');
+const path = require('node:path');
+const {URL} = require('node:url');
 const contentDisposition = require('content-disposition');
 const archiveType = require('archive-type');
 const decompress = require('decompress');
@@ -57,40 +57,43 @@ const getFilename = (res, data) => {
 	return filename;
 };
 
-module.exports = (uri, output, opts) => {
+module.exports = (uri, output, options) => {
 	if (typeof output === 'object') {
-		opts = output;
+		options = output;
 		output = null;
 	}
 
-	opts = Object.assign({
-		encoding: null,
-		rejectUnauthorized: process.env.npm_config_strict_ssl !== 'false'
-	}, opts);
+	options = {
+		https:{
+			rejectUnauthorized: process.env.npm_config_strict_ssl !== 'false'
+		},
+		encoding: options && options.encoding ? options.encoding : 'buffer',
+		responseType: options && options.encoding ? 'text' : 'buffer',
+		...options,
+	};
 
-	const stream = got.stream(uri, opts);
+	const stream = got.stream(uri, options);
 
 	const promise = pEvent(stream, 'response').then(res => {
-		const encoding = opts.encoding === null ? 'buffer' : opts.encoding;
-		return Promise.all([getStream(stream, {encoding}), res]);
+		return Promise.all([getStream(stream, options), res]);
 	}).then(result => {
 		const [data, res] = result;
 
 		if (!output) {
-			return opts.extract && archiveType(data) ? decompress(data, opts) : data;
+			return options.extract && archiveType(data) ? decompress(data, options) : data;
 		}
 
-		const filename = opts.filename || filenamify(getFilename(res, data));
+		const filename = options.filename || filenamify(getFilename(res, data));
 		const outputFilepath = path.join(output, filename);
 
-		if (opts.extract && archiveType(data)) {
-			return decompress(data, path.dirname(outputFilepath), opts);
+		if (options.extract && archiveType(data)) {
+			return decompress(data, path.dirname(outputFilepath), options);
 		}
 
 		return makeDir(path.dirname(outputFilepath))
 			.then(() => fsP.writeFile(outputFilepath, data))
 			.then(() => data);
-	});
+	})
 
 	stream.then = promise.then.bind(promise);
 	stream.catch = promise.catch.bind(promise);
