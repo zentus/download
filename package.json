@@ -18,6 +18,10 @@
 			"name": "zentus"
 		}
 	],
+	"private": false,
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com/"
+	},
 	"scripts": {
 		"test": "ava",
 		"lint": "xo",
